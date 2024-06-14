@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("HCAPatientPortalPOC")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1aa854db6e7f275648f6139819f527be71bc1366")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4c08aab85ae1f4827f25830b95e7aa330e7fa17b")]
 [assembly: System.Reflection.AssemblyProductAttribute("HCAPatientPortalPOC")]
 [assembly: System.Reflection.AssemblyTitleAttribute("HCAPatientPortalPOC")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
