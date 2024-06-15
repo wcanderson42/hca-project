@@ -46,14 +46,15 @@ public class PatientsController : Controller
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Patient patient)
+        public async Task<IActionResult> Create(IFormCollection form)
         {
+            Patient patient = new(form["FirstName"], form["LastName"], form["DateOfBirth"]);
             if (ModelState.IsValid)
             {
                 _context.Add(patient);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(patient);
+             return View(patient);
         }
 }
