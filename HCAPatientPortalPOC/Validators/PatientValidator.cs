@@ -1,21 +1,14 @@
 using HCAPatientPortalPOC.Models;
-using Microsoft.Extensions.Primitives;
 
 namespace HCAPatientPortalPOC.Validators;
 
 public static partial class Validator
 {
-    public static Patient ValidatePatient(Dictionary<string, StringValues> data)
+    public static Patient ValidatePatient(Dictionary<string, string> data)
     {
         // FirstName
-        StringValues rawFirst;
-        if(!data.TryGetValue("FirstName", out rawFirst))
-        {
-            throw new ValidationException("FirstName", "FirstName must be provided");
-        }
-
-        string first = rawFirst.ToString();
-        if(first.Length == 0)
+        string first;
+        if(!data.TryGetValue("FirstName", out first) || first.Length == 0)
         {
             throw new ValidationException("FirstName", "FirstName must be provided");
         }
@@ -25,14 +18,8 @@ public static partial class Validator
         }
 
         // LastName
-        StringValues rawLast;
-        if(!data.TryGetValue("LastName", out rawLast))
-        {
-            throw new ValidationException("LastName", "LastName must be provided");
-        }
-
-        string last = rawLast.ToString();
-        if(last.Length == 0)
+        string last;
+        if(!data.TryGetValue("LastName", out last) || last.Length == 0)
         {
             throw new ValidationException("LastName", "LastName must be provided");
         }
@@ -42,24 +29,43 @@ public static partial class Validator
         }
 
         // DateOfBirth
-        StringValues rawDOB;
+        string dobString;
         DateOnly dateOfBirth;
-        if(!data.TryGetValue("DateOfBirth", out rawDOB) || rawDOB.ToString().Length == 0)
+        if(!data.TryGetValue("DateOfBirth", out dobString) || dobString.Length == 0)
         {
             throw new ValidationException("DateOfBirth", "DateOfBirth must be provided");
         }
 
         try
         {
-            dateOfBirth = DateOnly.Parse(rawDOB.ToString());
+            dateOfBirth = DateOnly.Parse(dobString);
         }
         catch (Exception e)
         {
             throw new ValidationException("DateOfBirth", $"DateOfBirth not parsable \"{e.Message}\"");
         }
 
+
+
+        // Id - OPTIONAL
+        string rawId;
+        int id = 0;
+        bool useId = false;
+
+        if(data.TryGetValue("Id", out rawId))
+        {
+            useId = int.TryParse(rawId, out id);
+            if(useId && id < 0)
+            {
+               throw new ValidationException("Id", "Id cannot be negative"); 
+            }
+        }
+
         // All validation tests passed, return patient
+        if(useId)
+        {
+            return new Patient(id, first, last, dateOfBirth);
+        }
         return new Patient(first, last, dateOfBirth);
-        
     }
 }

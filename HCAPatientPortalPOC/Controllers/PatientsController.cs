@@ -42,15 +42,14 @@ public class PatientsController : Controller
             return View();
         }
 
-        // POST: Movies/Create
+        // POST: Patients/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(IFormCollection form)
+        public async Task<IActionResult> Create([Bind("Title,ReleaseDate,Genre,Price")] Dictionary<string, string> dict)
         {
-
             try
             {
-                Patient patient = Validator.ValidatePatient(form.ToDictionary());
+                Patient patient = Validator.ValidatePatient(dict);
                 if (ModelState.IsValid)
                 {
                     _context.Add(patient);
@@ -60,10 +59,71 @@ public class PatientsController : Controller
             }
             catch(Exception e)
             {
-                //TODO: update view for error response
+                //TODO: route to error page
                 Console.WriteLine(e.Message);
                 
             }  
+            return View();
+        }
+
+
+        // GET: Patients/Update/id
+        public async Task<IActionResult> Update(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var patient = await _context.Patients.FindAsync(id);
+            if (patient == null)
+            {
+                return NotFound();
+            }
+            return View(patient);
+        }
+
+        // POST: Patients/Update/id
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Update(int id, [Bind("Id,Title,ReleaseDate,Genre,Price")] Dictionary<string, string> dict)
+        {
+            Patient patient;
+            try
+            {
+                patient = Validator.ValidatePatient(dict);
+            }
+            catch(Exception e)
+            {
+                // TODO: route to error page
+                Console.WriteLine(e.Message);
+                return View();
+            }
+            if (id != patient.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(patient);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!PatientExists(patient.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
             return View();
         }
 
@@ -98,6 +158,11 @@ public class PatientsController : Controller
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+         private bool PatientExists(int id)
+        {
+            return _context.Patients.Any(e => e.Id == id);
         }
 
 }
