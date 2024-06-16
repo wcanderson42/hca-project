@@ -40,4 +40,36 @@ public class ScheduleSlotsController : Controller
 
             return View(slot);
         }
+
+        // GET ScheduleSlots/Create
+        public async Task<IActionResult> Create()
+        {
+            List<Provider> providers = await _context.Providers.ToListAsync();
+            ViewData["Providers"] = providers;
+            return View();
+        }
+
+        // POST: ScheduleSlots/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(Dictionary<string, string> dict)
+        {
+            try
+            {
+                ScheduleSlot slot = Validator.ValidateScheduleSlot(dict);
+                if (ModelState.IsValid)
+                {
+                    _context.Add(slot);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+            catch(Exception e)
+            {
+                //TODO: route to error page
+                Console.WriteLine(e.Message);
+                
+            }  
+            return View();
+        }
 }

@@ -47,7 +47,6 @@ public static partial class Validator
 
         if(data.TryGetValue("Id", out rawId))
         {
-            // rawId = "1" or "a" or ""
             int foundId;
             bool found = int.TryParse(rawId, out foundId);
             if(found && foundId < 0)
