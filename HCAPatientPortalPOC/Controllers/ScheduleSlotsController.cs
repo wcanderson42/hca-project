@@ -139,4 +139,38 @@ public class ScheduleSlotsController : Controller
         {
             return _context.ScheduleSlots.Any(e => e.Id == id);
         }
+
+        // GET: ScheduleSlots/Delete/id
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var slot = await _context.ScheduleSlots.FindAsync(id);
+
+            if (slot == null)
+            {
+                return NotFound();
+            }
+
+            return View(slot);
+        }
+
+        // POST: Providers/Delete/id
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var slot = await _context.ScheduleSlots.FindAsync(id);
+            if (slot != null)
+            {
+                _context.ScheduleSlots.Remove(slot);
+                // TODO: Delete appointment
+            }
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
 }

@@ -164,6 +164,4 @@ public class ProvidersController : Controller
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-
-
 }
