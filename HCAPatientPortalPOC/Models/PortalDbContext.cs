@@ -7,6 +7,7 @@ using System.Collections.Generic;
 public class PortalDbContext : DbContext
 {
     public DbSet<Patient> Patients { get; set; }
+    public DbSet<Provider> Providers { get; set; }
 
     public string DbPath { get; }
 
