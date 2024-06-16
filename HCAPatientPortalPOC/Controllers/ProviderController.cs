@@ -50,8 +50,7 @@ public class ProvidersController : Controller
         {
             try
             {
-                //TODO: Provider provider = Validator.ValidateProvider(dict);
-                Provider provider = new(dict["FirstName"], dict["LastName"], dict["Title"]);
+                Provider provider = Validator.ValidateProvider(dict);
                 if (ModelState.IsValid)
                 {
                     _context.Add(provider);
