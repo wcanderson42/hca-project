@@ -8,6 +8,7 @@ public class PortalDbContext : DbContext
 {
     public DbSet<Patient> Patients { get; set; }
     public DbSet<Provider> Providers { get; set; }
+    public DbSet<ScheduleSlot> ScheduleSlots { get; set; }
 
     public string DbPath { get; }
 
