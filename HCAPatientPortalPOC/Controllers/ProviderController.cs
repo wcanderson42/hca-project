@@ -132,4 +132,38 @@ public class ProvidersController : Controller
             return _context.Providers.Any(e => e.Id == id);
         }
 
+        // GET: Providers/Delete/id
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var provider = await _context.Providers
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (provider == null)
+            {
+                return NotFound();
+            }
+
+            return View(provider);
+        }
+
+        // POST: Providers/Delete/id
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var provider = await _context.Providers.FindAsync(id);
+            if (provider != null)
+            {
+                _context.Providers.Remove(provider);
+            }
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+
 }
