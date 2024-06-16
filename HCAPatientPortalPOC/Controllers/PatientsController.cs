@@ -37,6 +37,7 @@ public class PatientsController : Controller
             return View(patient);
         }
 
+        // GET Patients/Create
         public IActionResult Create()
         {
             return View();
@@ -45,7 +46,7 @@ public class PatientsController : Controller
         // POST: Patients/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Title,ReleaseDate,Genre,Price")] Dictionary<string, string> dict)
+        public async Task<IActionResult> Create(Dictionary<string, string> dict)
         {
             try
             {
