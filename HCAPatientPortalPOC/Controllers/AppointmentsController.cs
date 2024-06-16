@@ -124,7 +124,14 @@ public class AppointmentsController : Controller
             var appointment = await _context.Appointments.FindAsync(id);
             if (appointment != null)
             {
+                ScheduleSlot slot = await _context.ScheduleSlots.FindAsync(appointment.ScheduleSlotId);
+                if(slot == null)
+                {
+                    return NotFound();
+                }
                 _context.Appointments.Remove(appointment);
+                slot.Available = true;
+                _context.Update(slot);
             }
 
             await _context.SaveChangesAsync();

@@ -8,12 +8,17 @@ by Colten Anderson
 4. Any additional common best practices for development
 5. Should be shared via GitHub link
 
-## Project Notes ##
-1. Initialize MVC project
-2. Define data models for 
-    - Account
-    - Patient
-    - Appointment
-    - Provider
-    - ScheduleSlot
-3. Define SQLite DB and schemas
+## Project Setup ##
+1. clone repository locally
+2. Install dependencies with `dotnet restore`
+3. Set up database with `dotnet ef database update`
+
+## Indended Flow ##
+1. Add patient(s) via Patients > Create New
+2. Add provider(s)via Providers > Create New
+3. Add Schedule Slot(s) via ScheduleSlots > Create New
+4. Add appoiontment(s) via Appointments > Create New
+    - Appointments should fill an open slot with a patient
+    - On create, the slot should be marked as not available and not shown for future appointments
+    - On delete, the slot should be marked as available again
+    - If the slot is deleted the appointment will also be deleted
