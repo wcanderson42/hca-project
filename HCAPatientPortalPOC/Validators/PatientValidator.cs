@@ -4,6 +4,8 @@ namespace HCAPatientPortalPOC.Validators;
 
 public static partial class Validator
 {
+    // TODO: trim whitespace
+    // TODO: make id nullable
     public static Patient ValidatePatient(Dictionary<string, string> data)
     {
         // FirstName

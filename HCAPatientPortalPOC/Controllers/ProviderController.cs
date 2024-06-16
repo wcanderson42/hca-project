@@ -67,4 +67,69 @@ public class ProvidersController : Controller
             return View();
         }
 
+         // GET: Providers/Update/id
+        public async Task<IActionResult> Update(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var provider = await _context.Providers.FindAsync(id);
+            if (provider == null)
+            {
+                return NotFound();
+            }
+            return View(provider);
+        }
+
+        // POST: Providers/Update/id
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Update(int id, Dictionary<string, string> dict)
+        {
+            Provider provider;
+            try
+            {
+                provider = Validator.ValidateProvider(dict);
+            }
+            catch(Exception e)
+            {
+                // TODO: route to error page
+                Console.WriteLine(e.Message);
+                return View();
+            }
+            if (id != provider.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(provider);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!ProviderExists((int)provider.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View();
+        }
+
+        private bool ProviderExists(int id)
+        {
+            return _context.Providers.Any(e => e.Id == id);
+        }
+
 }

@@ -87,7 +87,7 @@ public class PatientsController : Controller
         // POST: Patients/Update/id
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Update(int id, [Bind("Id,Title,ReleaseDate,Genre,Price")] Dictionary<string, string> dict)
+        public async Task<IActionResult> Update(int id, Dictionary<string, string> dict)
         {
             Patient patient;
             try

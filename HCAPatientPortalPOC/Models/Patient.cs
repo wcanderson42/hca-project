@@ -1,5 +1,5 @@
 namespace HCAPatientPortalPOC.Models;
-
+// TODO: make id nullable
 public class Patient(string firstName, string lastName, DateOnly dateOfBirth) // Primary constructor for creating new patients
 {    
     public int Id { get; private set;} // Id should not be changed after instantiation. Allow private set for EF database reads

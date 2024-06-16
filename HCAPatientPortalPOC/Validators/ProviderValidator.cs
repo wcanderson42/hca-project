@@ -16,6 +16,7 @@ public static partial class Validator
         {
             throw new ValidationException("FirstName", "FirstName must be less than 30 characters long");
         }
+        first = first.Trim();
 
         // LastName
         string last;
@@ -27,12 +28,17 @@ public static partial class Validator
         {
             throw new ValidationException("LastName", "LastName must be less than 30 characters long");
         }
+        last = last.Trim();
 
         // Title - OPTIONAL
         string? title = null;
         if(data.TryGetValue("Title", out title) && title != null && title.Length > 10) // TODO: arbitrary value, should be moved to  aconfiguration file
         {
-            throw new ValidationException("Title", "Title must be less than 10 characters long");
+            title = title.Trim();
+            if(title.Length > 10)
+            {
+                throw new ValidationException("Title", "Title must be less than 10 characters long");
+            }
         }
 
         // Id - OPTIONAL
