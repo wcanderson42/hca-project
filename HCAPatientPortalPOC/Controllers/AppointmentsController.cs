@@ -22,7 +22,7 @@ public class AppointmentsController : Controller
                 .ToListAsync());
         }
 
-        // GET: ScheduleSlots/Details/id
+        // GET: Appointments/Details/id
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -44,7 +44,7 @@ public class AppointmentsController : Controller
             return View(appointment);
         }
 
-        // GET ScheduleSlots/Create
+        // GET Appointments/Create
         public async Task<IActionResult> Create()
         {
             List<Provider> providers = await _context.Providers.ToListAsync();
@@ -61,7 +61,7 @@ public class AppointmentsController : Controller
             return View();
         }
 
-        // POST: ScheduleSlots/Create
+        // POST: Appointments/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Dictionary<string, string> dict)
@@ -93,5 +93,41 @@ public class AppointmentsController : Controller
             return View();
         }
 
-       
+        // GET: Appointments/Delete/id
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var appointment = await _context.Appointments.FindAsync(id);
+
+            if (appointment == null)
+            {
+                return NotFound();
+            }
+
+            var slot = await _context.ScheduleSlots.FindAsync(appointment.ScheduleSlotId);
+            ViewData["Provider"] = await _context.Providers.FindAsync(slot.ProviderId);
+            ViewData["Patient"] = await _context.Patients.FindAsync(appointment.PatientId);
+            ViewData["Slot"] = slot;
+
+            return View(appointment);
+        }
+
+        // POST: Providers/Delete/id
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var appointment = await _context.Appointments.FindAsync(id);
+            if (appointment != null)
+            {
+                _context.Appointments.Remove(appointment);
+            }
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
 }

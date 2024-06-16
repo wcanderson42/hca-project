@@ -167,7 +167,6 @@ public class ScheduleSlotsController : Controller
             if (slot != null)
             {
                 _context.ScheduleSlots.Remove(slot);
-                // TODO: Delete appointment
             }
 
             await _context.SaveChangesAsync();
