@@ -1,0 +1,86 @@
+@model HCAPatientPortalPOC.Models.Appointment
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Appointment</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PatientId)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PatientId)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ScheduleSlotId)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ScheduleSlotId)
+        </dd>
+    </dl>
+</div>
+@{var slot = (ScheduleSlot)ViewData["Slot"];}
+@{var provider = (Provider)ViewData["Provider"];}
+<div>
+    <h4>ScheduleSlot</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            StartTime
+        </dt>
+        <dd class = "col-sm-10">
+            @slot.StartTime
+        </dd>
+        <dt class = "col-sm-2">
+            Duration
+        </dt>
+        <dd class = "col-sm-10">
+            @slot.Duration
+        </dd>
+        <dt class = "col-sm-2">
+            Provider
+        </dt>
+        <dd class = "col-sm-10">
+            @provider.FirstName @provider.LastName @provider.Title
+        </dd>
+    </dl>
+</div>
+@{var patient = (Patient)ViewData["Patient"];}
+<div>
+    <h4>Patient</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            FirstName
+        </dt>
+        <dd class = "col-sm-10">
+            @patient.FirstName
+        </dd>
+        <dt class = "col-sm-2">
+            LastName
+        </dt>
+        <dd class = "col-sm-10">
+            @patient.LastName
+        </dd>
+        <dt class = "col-sm-2">
+            Date Of Birth
+        </dt>
+        <dd class = "col-sm-10">
+            @patient.DateOfBirth
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

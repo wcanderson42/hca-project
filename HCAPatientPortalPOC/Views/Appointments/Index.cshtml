@@ -1,4 +1,4 @@
-@model IEnumerable<HCAPatientPortalPOC.Models.ScheduleSlot>
+@model IEnumerable<HCAPatientPortalPOC.Models.Appointment>
 
 @{
     ViewData["Title"] = "Index";
@@ -16,16 +16,10 @@
                 @Html.DisplayNameFor(model => model.Id)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ProviderId)
+                @Html.DisplayNameFor(model => model.PatientId)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.StartTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Duration)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Available)
+                @Html.DisplayNameFor(model => model.ScheduleSlotId)
             </th>
             <th></th>
         </tr>
@@ -37,19 +31,12 @@
                 @Html.DisplayFor(modelItem => item.Id)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ProviderId)
+                @Html.DisplayFor(modelItem => item.PatientId)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.StartTime)
+                @Html.DisplayFor(modelItem => item.ScheduleSlotId)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Duration)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Available)
-            </td>
-            <td>
-                <a asp-action="Update" asp-route-id="@item.Id">Update</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>

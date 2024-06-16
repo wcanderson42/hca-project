@@ -1,0 +1,48 @@
+@model HCAPatientPortalPOC.Models.Appointment
+
+@{
+    ViewData["Title"] = "Create";
+}
+@{var providers = (Dictionary<int?, string>)ViewData["Providers"];}
+<h1>Create</h1>
+
+<h4>Appointment</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="PatientId" class="control-label"></label>
+                <select asp-for="PatientId" class="form-control">
+                    @foreach (Patient p in (List<Patient>)ViewData["Patients"])
+                        {
+                            <option value=@p.Id>@p.FirstName @p.LastName</option>
+                        }
+                </select>
+                <span asp-validation-for="PatientId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ScheduleSlotId" class="control-label"></label>
+                <select asp-for="ScheduleSlotId" class="form-control">
+                    @foreach (ScheduleSlot slot in (List<ScheduleSlot>)ViewData["Slots"])
+                        {
+                            <option value=@slot.Id>@slot.StartTime, @slot.Duration, @providers[slot.ProviderId]</option>
+                        }
+                </select>
+                <span asp-validation-for="PatientId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

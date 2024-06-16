@@ -51,19 +51,15 @@ public static partial class Validator
             throw new ValidationException("Duration", "Duration must be between 1 and 60");
         }
 
-        // AppointmentId - OPTIONAL
-        int? appointmentId = null;
-        if(data.TryGetValue("AppointmentId", out string apptIdStr))
+        // Available
+        bool available = true;
+        if(data.TryGetValue("Available", out string availableStr))
         {
-            if (!int.TryParse(apptIdStr, out int foundApptId))
+            if (!bool.TryParse(availableStr, out bool foundAvailable))
             {
-                throw new ValidationException("AppointmentId", "AppointmentId must be an int");
+                throw new ValidationException("Available", "Available must be a bool");
             }
-            else if (foundApptId < 0)
-            {
-                throw new ValidationException("AppointmentId", "AppointmentId cannot be negative");
-            }
-            appointmentId = foundApptId;
+            available = foundAvailable;
         } 
 
         // Id - OPTIONAL
@@ -82,6 +78,6 @@ public static partial class Validator
         } 
 
         // All validation tests passed, return patient
-        return new ScheduleSlot(providerId, startTime, duration, id, appointmentId);
+        return new ScheduleSlot(providerId, startTime, duration, available, id);
     }
 }
