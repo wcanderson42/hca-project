@@ -30,7 +30,7 @@ public static partial class Validator
 
         // Title - OPTIONAL
         string? title = null;
-        if(data.TryGetValue("Title", out title) && title.Length > 10) // TODO: arbitrary value, should be moved to  aconfiguration file
+        if(data.TryGetValue("Title", out title) && title != null && title.Length > 10) // TODO: arbitrary value, should be moved to  aconfiguration file
         {
             throw new ValidationException("Title", "Title must be less than 10 characters long");
         }
