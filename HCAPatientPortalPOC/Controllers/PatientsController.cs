@@ -123,6 +123,7 @@ public class PatientsController : Controller
                 }
                 return RedirectToAction(nameof(Index));
             }
+            
             return View();
         }
 

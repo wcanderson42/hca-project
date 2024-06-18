@@ -46,24 +46,15 @@ public class ProvidersController : Controller
         // POST: Providers/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Dictionary<string, string> dict)
+        public async Task<IActionResult> Create(Provider provider)
         {
-            try
+            if(ModelState.IsValid)
             {
-                Provider provider = Validator.ValidateProvider(dict);
-                if (ModelState.IsValid)
-                {
-                    _context.Add(provider);
-                    await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
-                }
+               _context.Add(provider);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index)); 
             }
-            catch(Exception e)
-            {
-                //TODO: route to error page
-                Console.WriteLine(e.Message);
-                
-            }  
+
             return View();
         }
 
@@ -86,19 +77,8 @@ public class ProvidersController : Controller
         // POST: Providers/Update/id
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Update(int id, Dictionary<string, string> dict)
+        public async Task<IActionResult> Update(int id, Provider provider)
         {
-            Provider provider;
-            try
-            {
-                provider = Validator.ValidateProvider(dict);
-            }
-            catch(Exception e)
-            {
-                // TODO: route to error page
-                Console.WriteLine(e.Message);
-                return View();
-            }
             if (id != provider.Id)
             {
                 return NotFound();
@@ -113,23 +93,30 @@ public class ProvidersController : Controller
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProviderExists((int)provider.Id))
+                    if (!ProviderExists(provider.Id))
                     {
                         return NotFound();
                     }
                     else
                     {
+                        // TODO: handle concurrency exception
                         throw;
                     }
                 }
                 return RedirectToAction(nameof(Index));
             }
+
             return View();
         }
 
-        private bool ProviderExists(int id)
+        private bool ProviderExists(int? id)
         {
-            return _context.Providers.Any(e => e.Id == id);
+            if(id != null)
+            {
+               return _context.Providers.Any(e => e.Id == id); 
+            }
+            return false;
+            
         }
 
         // GET: Providers/Delete/id
