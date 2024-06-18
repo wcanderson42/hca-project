@@ -1,6 +1,13 @@
 # HCA Backend Coding Assignment #
 by Colten Anderson
 
+## Future Branch
+On this branch I will make additions and improvements based on what I would do to continue this project
+Ideas
+- add an error handler to display validation errors
+- delegate database requests so that they are available to other controllers
+- delegate validation by type to make validators more readable
+
 ## Assignment ##
 1. Creating a sample web app with CRUD & REST operations with UI
 2. Implement backend using C# and MVC using ASP.net
