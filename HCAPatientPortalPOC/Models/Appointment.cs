@@ -1,8 +1,21 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace HCAPatientPortalPOC.Models;
 
-public class Appointment(int patientId, int scheduleSlotId)
+public class Appointment()
 {
+    [Key()]
     public int? Id {get; private set; }
-    public int PatientId { get; set; } = patientId;
-    public int ScheduleSlotId { get; set; } = scheduleSlotId;
+
+    [
+        Display(Name = "Patient ID"),
+        Required(ErrorMessage = "Patient ID is reuired")
+    ]
+    public required int PatientId { get; set; }
+
+    [
+        Display(Name = "Schedule Slot ID"),
+        Required(ErrorMessage = "Schedule Slot ID is reuired")
+    ]
+    public required int ScheduleSlotId { get; set; }
 }

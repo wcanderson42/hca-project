@@ -7,6 +7,7 @@ Ideas
 - add an error handler to display validation errors
 - delegate database requests so that they are available to other controllers
 - delegate validation by type to make validators more readable
+- persist ViewData when validation fails
 
 ## Assignment ##
 1. Creating a sample web app with CRUD & REST operations with UI

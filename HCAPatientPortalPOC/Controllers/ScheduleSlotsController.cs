@@ -114,6 +114,8 @@ public class ScheduleSlotsController : Controller
                 }
                 return RedirectToAction(nameof(Index));
             }
+            List<Provider> providers = await _context.Providers.ToListAsync();
+            ViewData["Providers"] = providers;
             return View();
         }
 

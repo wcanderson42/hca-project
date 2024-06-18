@@ -47,49 +47,31 @@ public class AppointmentsController : Controller
         // GET Appointments/Create
         public async Task<IActionResult> Create()
         {
-            List<Provider> providers = await _context.Providers.ToListAsync();
-            ViewData["Providers"] = providers.ToDictionary(p => p.Id, p => $"{p.FirstName} {p.LastName} {p.Title}");
-            ViewData["Patients"] = await _context.Patients.ToListAsync();
-            ViewData["Slots"] = await _context.ScheduleSlots
-                .Where(s => s.Available == true)
-                .OrderBy(x => x.ProviderId)
-                .ThenBy(x => x.StartTime)
-                .ThenBy(x => x.Duration)
-                .ToListAsync();
-
-
+            SetViewData();
             return View();
         }
 
         // POST: Appointments/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Dictionary<string, string> dict)
+        public async Task<IActionResult> Create(Appointment appointment)
         {
-            try
+            if (ModelState.IsValid)
             {
-                Appointment appointment = Validator.ValidateAppointment(dict);
-                if (ModelState.IsValid)
+                ScheduleSlot slot = await _context.ScheduleSlots.FindAsync(appointment.ScheduleSlotId);
+                if(slot == null)
                 {
-                    ScheduleSlot slot = await _context.ScheduleSlots.FindAsync(appointment.ScheduleSlotId);
-                    if(slot == null)
-                    {
-                        return NotFound();
-                    }
-
-                    _context.Add(appointment);
-                    slot.Available = false;
-                    _context.Update(slot);
-                    await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+                    return NotFound();
                 }
+
+                _context.Add(appointment);
+                slot.Available = false;
+                _context.Update(slot);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
             }
-            catch(Exception e)
-            {
-                //TODO: route to error page
-                Console.WriteLine(e.Message);
-                
-            }  
+            
+            SetViewData();
             return View();
         }
 
@@ -136,5 +118,18 @@ public class AppointmentsController : Controller
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        private async void SetViewData()
+        {
+            List<Provider> providers = await _context.Providers.ToListAsync();
+            ViewData["Providers"] = providers.ToDictionary(p => p.Id, p => $"{p.FirstName} {p.LastName} {p.Title}");
+            ViewData["Patients"] = await _context.Patients.ToListAsync();
+            ViewData["Slots"] = await _context.ScheduleSlots
+                .Where(s => s.Available == true)
+                .OrderBy(x => x.ProviderId)
+                .ThenBy(x => x.StartTime)
+                .ThenBy(x => x.Duration)
+                .ToListAsync();
         }
 }
