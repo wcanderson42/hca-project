@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.CodeAnalysis;
+//using System.Diagnostics.CodeAnalysis;
 using HCAPatientPortalPOC.Validators;
 
 namespace HCAPatientPortalPOC.Models;
@@ -31,13 +31,4 @@ public class Patient()
         DateIsPastPresent(ErrorMessage = "Date of Birth must be today or in the past"),
     ]
     public required DateOnly DateOfBirth { get; set;}
-
-    [SetsRequiredMembers]
-    public Patient(string firstName, string lastName, DateOnly dateOfBirth, int? id = null) : this()
-    {
-        FirstName = firstName;
-        LastName = lastName;
-        DateOfBirth = dateOfBirth;
-        Id = id;
-    }
 }
