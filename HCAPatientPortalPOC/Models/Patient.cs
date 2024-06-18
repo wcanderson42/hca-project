@@ -15,14 +15,14 @@ public class Patient()
         Required(ErrorMessage = "First name is required"),
         StringLength(15, ErrorMessage = "First Name must be less than 15 characters")
     ]
-    public string FirstName { get; set; }
+    public required string FirstName { get; set; }
 
     [
         Display(Name = "Last Name"),
         Required(ErrorMessage = "Last name is required"),
         StringLength(15, ErrorMessage = "Last Name must be less than 15 characters")
     ]
-    public string LastName { get; set; }
+    public required string LastName { get; set; }
 
     [
         Display(Name = "Date of Birth"),

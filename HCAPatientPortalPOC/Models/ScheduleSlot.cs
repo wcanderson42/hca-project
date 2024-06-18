@@ -13,21 +13,21 @@ public class ScheduleSlot()
         Required(ErrorMessage = "Provider ID is required")
         // TODO: is this foreign key defined?
     ]
-    public int ProviderId { get; set; }
+    public required int ProviderId { get; set; }
 
     [
         Display(Name = "Start Time"),
         Required(ErrorMessage = "Start time is required"),
         DateIsFuture(ErrorMessage = "Start time must be in the future")
     ]
-    public DateTime StartTime { get; set; }
+    public required DateTime StartTime { get; set; }
 
     [
         Display(Name = "Duration (Minutes)"),
         Required(ErrorMessage = "Duration is required"),
         Range(1,60, ErrorMessage = "Duration must be between 1 and 60")
     ]
-    public int Duration { get; set; }
+    public required int Duration { get; set; }
 
     [
         Display(Name = "Slot is Available"),
