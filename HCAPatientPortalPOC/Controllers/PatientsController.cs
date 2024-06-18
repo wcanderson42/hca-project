@@ -1,7 +1,9 @@
-﻿using HCAPatientPortalPOC.Models;
+﻿using System.IO.Compression;
+using HCAPatientPortalPOC.Models;
 using HCAPatientPortalPOC.Validators;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 namespace HCAPatientPortalPOC.Controllers;
 
 public class PatientsController : Controller
@@ -46,25 +48,31 @@ public class PatientsController : Controller
         // POST: Patients/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Dictionary<string, string> dict)
+        public async Task<IActionResult> Create(Patient patient)
         {
-            try
-            {
-                Patient patient = Validator.ValidatePatient(dict);
-                if (ModelState.IsValid)
-                {
-                    _context.Add(patient);
-                    await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
-                }
+            if(ModelState.IsValid){
+                _context.Add(patient);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
             }
-            catch(Exception e)
-            {
-                //TODO: route to error page
-                Console.WriteLine(e.Message);
-                
-            }  
             return View();
+            // try
+            // {
+            //     Patient patient = Validator.ValidatePatient(dict);
+            //     if (ModelState.IsValid)
+            //     {
+            //         _context.Add(patient);
+            //         await _context.SaveChangesAsync();
+            //         return RedirectToAction(nameof(Index));
+            //     }
+            // }
+            // catch(Exception e)
+            // {
+            //     //TODO: route to error page
+            //     Console.WriteLine(e.Message);
+                
+            // }  
+            // return View();
         }
 
 
@@ -87,19 +95,8 @@ public class PatientsController : Controller
         // POST: Patients/Update/id
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Update(int id, Dictionary<string, string> dict)
+        public async Task<IActionResult> Update(int id, Patient patient)
         {
-            Patient patient;
-            try
-            {
-                patient = Validator.ValidatePatient(dict);
-            }
-            catch(Exception e)
-            {
-                // TODO: route to error page
-                Console.WriteLine(e.Message);
-                return View();
-            }
             if (id != patient.Id)
             {
                 return NotFound();
@@ -120,6 +117,7 @@ public class PatientsController : Controller
                     }
                     else
                     {
+                        // TODO: handle concurrency exception
                         throw;
                     }
                 }
@@ -161,9 +159,12 @@ public class PatientsController : Controller
             return RedirectToAction(nameof(Index));
         }
 
-         private bool PatientExists(int id)
+         private bool PatientExists(int? id)
         {
-            return _context.Patients.Any(e => e.Id == id);
+            if(id != null){
+                return _context.Patients.Any(e => e.Id == id);
+            }
+            return false;
         }
 
 }

@@ -1,15 +1,43 @@
-namespace HCAPatientPortalPOC.Models;
-// TODO: make id nullable
-public class Patient(string firstName, string lastName, DateOnly dateOfBirth) // Primary constructor for creating new patients
-{    
-    public int Id { get; private set;} // Id should not be changed after instantiation. Allow private set for EF database reads
-    public string FirstName { get; set; } = firstName;
-    public string LastName { get; set; } = lastName;
-    public DateOnly DateOfBirth { get; private set;} = dateOfBirth;
+using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
+using HCAPatientPortalPOC.Validators;
 
-    public Patient(int id, string firstName, string lastName, DateOnly dateOfBirth) // Secondary constructor for when Id is known Ie database update operation 
-        : this(firstName, lastName, dateOfBirth)
+namespace HCAPatientPortalPOC.Models;
+
+public class Patient()
+{    
+
+    // Id - primary identifier for Patients, should only be set by EF when it returns database entries
+    [Key()]
+    public int? Id { get; init;} 
+    
+    [
+        Display(Name = "First Name"),
+        Required(ErrorMessage = "First name is required"),
+        StringLength(15, ErrorMessage = "First Name must be between 1 and 15 characters long")
+    ]
+    public required string FirstName { get; set; }
+
+    [
+        Display(Name = "Last Name"),
+        Required(ErrorMessage = "Last name is required"),
+        StringLength(15, ErrorMessage = "Last Name must be between 1 and 15 characters long")
+    ]
+    public required string LastName { get; set; }
+
+    [
+        Display(Name = "Date of Birth"),
+        Required(ErrorMessage = "Date of Birth is required"),
+        DateIsPastPresent(ErrorMessage = "Date of Birth must be today or in the past"),
+    ]
+    public required DateOnly DateOfBirth { get; set;}
+
+    [SetsRequiredMembers]
+    public Patient(string firstName, string lastName, DateOnly dateOfBirth, int? id = null) : this()
     {
+        FirstName = firstName;
+        LastName = lastName;
+        DateOfBirth = dateOfBirth;
         Id = id;
     }
 }
