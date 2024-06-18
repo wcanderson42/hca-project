@@ -56,23 +56,6 @@ public class PatientsController : Controller
                 return RedirectToAction(nameof(Index));
             }
             return View();
-            // try
-            // {
-            //     Patient patient = Validator.ValidatePatient(dict);
-            //     if (ModelState.IsValid)
-            //     {
-            //         _context.Add(patient);
-            //         await _context.SaveChangesAsync();
-            //         return RedirectToAction(nameof(Index));
-            //     }
-            // }
-            // catch(Exception e)
-            // {
-            //     //TODO: route to error page
-            //     Console.WriteLine(e.Message);
-                
-            // }  
-            // return View();
         }
 
 
@@ -123,8 +106,16 @@ public class PatientsController : Controller
                 }
                 return RedirectToAction(nameof(Index));
             }
-            
+
             return View();
+        }
+
+        private bool PatientExists(int? id)
+        {
+            if(id != null){
+                return _context.Patients.Any(e => e.Id == id);
+            }
+            return false;
         }
 
         // GET: Patients/Delete/id
@@ -159,13 +150,4 @@ public class PatientsController : Controller
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-
-         private bool PatientExists(int? id)
-        {
-            if(id != null){
-                return _context.Patients.Any(e => e.Id == id);
-            }
-            return false;
-        }
-
 }

@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-//using System.Diagnostics.CodeAnalysis;
 using HCAPatientPortalPOC.Validators;
 
 namespace HCAPatientPortalPOC.Models;
@@ -16,14 +15,14 @@ public class Patient()
         Required(ErrorMessage = "First name is required"),
         StringLength(15, ErrorMessage = "First Name must be less than 15 characters")
     ]
-    public required string FirstName { get; set; }
+    public string FirstName { get; set; }
 
     [
         Display(Name = "Last Name"),
         Required(ErrorMessage = "Last name is required"),
         StringLength(15, ErrorMessage = "Last Name must be less than 15 characters")
     ]
-    public required string LastName { get; set; }
+    public string LastName { get; set; }
 
     [
         Display(Name = "Date of Birth"),

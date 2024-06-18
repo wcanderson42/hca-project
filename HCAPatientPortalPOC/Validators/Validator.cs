@@ -26,19 +26,6 @@ public class ValidationException : Exception
     public ValidationException(string property, string message) : base($"Invalid {property}: {message}") { }
 }
 
-public static class AdditionalValidation
-{
-     public static ValidationResult DateIsPastPresent( DateOnly date)
-     {
-        if(date <= DateOnly.FromDateTime(DateTime.Now))
-        {
-            return ValidationResult.Success;
-        }
-        
-        return new ValidationResult("Date is not in the past or present");
-    }
-}
-
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
 sealed public class DateIsPastPresentAttribute : ValidationAttribute
 {
@@ -48,7 +35,7 @@ sealed public class DateIsPastPresentAttribute : ValidationAttribute
         {
             return false;
         }
-        
+
         if((DateOnly) value > DateOnly.FromDateTime(DateTime.Now))
         {
             return false;
@@ -57,3 +44,23 @@ sealed public class DateIsPastPresentAttribute : ValidationAttribute
         return true;
     }
 }
+
+[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
+sealed public class DateIsFutureAttribute : ValidationAttribute
+{
+    public override bool IsValid(object? value)
+    {
+        if(value == null)
+        {
+            return false;
+        }
+
+        if((DateTime) value < DateTime.Now)
+        {
+            return false;
+        }
+
+        return true;
+    }
+}
+
