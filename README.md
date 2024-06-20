@@ -17,9 +17,13 @@ Ideas
 5. Should be shared via GitHub link
 
 ## Project Setup ##
+(assumes dotnet and git are already installed)
 1. clone repository locally
-2. Install dependencies with `dotnet restore`
-3. Set up database with `dotnet ef database update`
+2. Open a terminal at project
+3. Install required local tools with `dotnet tool restore`
+4. Set up database with `dotnet ef database update`
+5. Build and run the project with `dotnet run`
+6. Open browser at assigned localhost port 
 
 ## Indended Flow ##
 1. Add patient(s) via Patients > Create New
